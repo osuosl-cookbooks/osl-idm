@@ -1,29 +1,38 @@
-# osl-idm
+# osl-idm Cookbook
 
-TODO: Enter the cookbook description here.
+A cookbook for managing Identity Management (IdM) services at the OSUOSL.
 
 ## Requirements
 
 ### Platforms
 
-- AlmaLinux 8+
+- AlmaLinux 9
+
+### Chef
+
+- Chef 16+
 
 ### Cookbooks
 
-## Attributes
+- base
+- certificate
+- osl-docker
+- osl-resource
+- osl-firewall
 
 ## Resources
 
-## Recipes
+- [`osl_freeipa`](documentation/resources/osl_freeipa.md): Installs and configures a FreeIPA server.
+- [`osl_keycloak`](documentation/resources/osl_keycloak.md): Installs and configures a Keycloak instance.
+- [`osl_noggin`](documentation/resources/osl_noggin.md): Installs and configures the Noggin user portal for FreeIPA.
 
-## Contributing
+## Usage
 
-1. Fork the repository on GitHub
-1. Create a named feature branch (like `username/add_component_x`)
-1. Write tests for your change
-1. Write your change
-1. Run the tests, ensuring they all pass
-1. Submit a pull request on GitHub
+Add `depends 'osl-idm'` to your cookbook's `metadata.rb` and use the resources as needed in your recipes.
+
+## Documentation
+
+Full documentation for all resources is available in the [`documentation`](documentation/) directory.
 
 ## License and Authors
 

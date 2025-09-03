@@ -15,14 +15,31 @@ provisioner:
   enforce_idempotency: true
   multiple_converge: 2
   deprecations_as_errors: true
+  attributes:
+    osl-acme:
+      pebble:
+        host_aliases:
+          - keycloak.testing.osuosl.org
 
 platforms:
-  - name: almalinux-8
   - name: almalinux-9
-  - name: debian-12
-  - name: ubuntu-24.04
 
 suites:
-  - name: default
+  - name: freeipa
     run_list:
-      - recipe[osl-idm::default]
+      - recipe[test-idm::freeipa]
+  - name: keycloak
+    run_list:
+      - recipe[test-idm::keycloak]
+  - name: keycloak-caddy
+    run_list:
+      - recipe[osl-acme::server]
+      - recipe[test-idm::keycloak_caddy]
+    verifier:
+      inspec_tests:
+        - test/integration/keycloak
+      inputs:
+          caddy: true
+  - name: noggin
+    run_list:
+      - recipe[test-idm::noggin]

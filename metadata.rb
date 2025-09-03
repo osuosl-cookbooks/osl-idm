@@ -8,7 +8,10 @@ source_url        'https://github.com/osuosl-cookbooks/osl-idm'
 chef_version      '>= 18.0'
 version           '0.1.0'
 
-supports          'almalinux', '~> 8.0'
+depends           'base'
+depends           'certificate'
+depends           'osl-docker'
+depends           'osl-resources', '>= 2.7.3'
+depends           'osl-firewall', '>= 1.22'
+
 supports          'almalinux', '~> 9.0'
-supports          'debian', '~> 12.0'
-supports          'ubuntu', '~> 24.04'

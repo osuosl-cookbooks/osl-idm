@@ -1,0 +1,4 @@
+name: keycloak
+inputs:
+    - name: caddy
+      value: false

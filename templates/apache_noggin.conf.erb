@@ -1,0 +1,34 @@
+# templates/default/apache_noggin.conf.erb
+# Apache Vhost for Noggin
+
+<VirtualHost *:80>
+    ServerName <%= @hostname %>
+
+    # Redirect HTTP to HTTPS in production
+    # Redirect permanent / https://<%= @hostname %>/
+
+    # Ensure mod_wsgi is loaded and configured correctly elsewhere
+    # e.g., via package 'python3-mod_wsgi' and default httpd config
+
+    WSGIDaemonProcess noggin user=apache group=apache threads=5
+    WSGIScriptAlias / <%= @noggin_wsgi_path %>
+
+    <Directory <%= File.dirname(@noggin_wsgi_path) %>>
+        WSGIProcessGroup noggin
+        WSGIApplicationGroup %{GLOBAL}
+        Require all granted
+    </Directory>
+
+    ErrorLog /var/log/httpd/noggin_error.log
+    CustomLog /var/log/httpd/noggin_access.log combined
+</VirtualHost>
+
+# Add a similar block for <VirtualHost *:443> with SSL configuration for production!
+# <VirtualHost *:443>
+#    ServerName <%= @hostname %>
+#    ... SSL directives ...
+#    WSGIDaemonProcess noggin ...
+#    WSGIScriptAlias / ...
+#    <Directory ...> ... </Directory>
+#    ... logs ...
+# </VirtualHost>
