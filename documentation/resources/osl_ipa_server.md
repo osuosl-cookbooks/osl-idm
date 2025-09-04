@@ -1,4 +1,4 @@
-# Resource: osl_freeipa
+# Resource: osl_ipa_server
 
 ## Actions
 
@@ -23,7 +23,7 @@
 ## Example Usage
 
 ```ruby
-osl_freeipa 'ipa.example.com' do
+osl_ipa_server 'ipa.example.com' do
   admin_password 'password'
   certificate 'ipa.example.com'
   certificate_pin '1234'

@@ -1,5 +1,5 @@
-resource_name :osl_freeipa
-provides :osl_freeipa
+resource_name :osl_ipa_server
+provides :osl_ipa_server
 unified_mode true
 
 default_action :install
@@ -25,8 +25,8 @@ action :install do
 
   osl_firewall_port 'http'
   osl_firewall_port 'ldap'
-  osl_firewall_kerberos 'freeipa'
-  osl_firewall_dns 'freeipa' if new_resource.dns
+  osl_firewall_kerberos 'ipa_server'
+  osl_firewall_dns 'ipa_server' if new_resource.dns
 
   package %w(ipa-server ipa-healthcheck)
   package 'ipa-server-dns' if new_resource.dns
@@ -50,6 +50,8 @@ action :install do
     sensitive true
     creates "/etc/pki/tls/certs/#{new_resource.certificate}.p12"
   end
+
+  return
 
   execute 'ipa-server-install' do
     command [

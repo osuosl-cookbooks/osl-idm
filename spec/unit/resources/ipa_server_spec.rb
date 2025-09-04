@@ -1,10 +1,10 @@
 require_relative '../../spec_helper'
 
-describe 'test-idm::freeipa' do
+describe 'test-idm::ipa_server' do
   ALL_PLATFORMS.each do |p|
     context "#{p[:platform]} #{p[:version]}" do
       cached(:chef_run) do
-        ChefSpec::SoloRunner.new(p.merge(step_into: %w(osl_freeipa))).converge(described_recipe)
+        ChefSpec::SoloRunner.new(p.merge(step_into: %w(osl_ipa_server))).converge(described_recipe)
       end
       it 'converges successfully' do
         expect { chef_run }.to_not raise_error
@@ -12,8 +12,8 @@ describe 'test-idm::freeipa' do
 
       it { is_expected.to accept_osl_firewall_port 'http' }
       it { is_expected.to accept_osl_firewall_port 'ldap' }
-      it { is_expected.to accept_osl_firewall_kerberos 'freeipa' }
-      it { is_expected.to accept_osl_firewall_dns 'freeipa' }
+      it { is_expected.to accept_osl_firewall_kerberos 'ipa_server' }
+      it { is_expected.to accept_osl_firewall_dns 'ipa_server' }
       it { is_expected.to install_package %w(ipa-server ipa-healthcheck) }
       it { is_expected.to install_package 'ipa-server-dns' }
 

@@ -22,7 +22,7 @@ A cookbook for managing Identity Management (IdM) services at the OSUOSL.
 
 ## Resources
 
-- [`osl_freeipa`](documentation/resources/osl_freeipa.md): Installs and configures a FreeIPA server.
+- [`osl_ipa_server`](documentation/resources/osl_ipa_server.md): Installs and configures a FreeIPA server.
 - [`osl_keycloak`](documentation/resources/osl_keycloak.md): Installs and configures a Keycloak instance.
 - [`osl_noggin`](documentation/resources/osl_noggin.md): Installs and configures the Noggin user portal for FreeIPA.
 

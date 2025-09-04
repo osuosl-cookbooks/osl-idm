@@ -25,9 +25,9 @@ platforms:
   - name: almalinux-9
 
 suites:
-  - name: freeipa
+  - name: ipa-server
     run_list:
-      - recipe[test-idm::freeipa]
+      - recipe[test-idm::ipa_server]
   - name: keycloak
     run_list:
       - recipe[test-idm::keycloak]

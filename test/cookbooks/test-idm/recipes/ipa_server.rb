@@ -5,7 +5,7 @@ append_if_no_line '/etc/hosts' do
   line "#{node['ipaddress']} idm.testing.osuosl.org"
 end
 
-osl_freeipa 'idm.testing.osuosl.org' do
+osl_ipa_server 'idm.testing.osuosl.org' do
   domain 'testing.osuosl.org'
   realm 'TESTING.OSUOSL.ORG'
   dirsrv_password 'dirsrv_password'
