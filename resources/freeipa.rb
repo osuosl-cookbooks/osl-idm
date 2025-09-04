@@ -12,6 +12,7 @@ property :dns, [true, false], default: false
 property :domain, String, required: true
 property :ntp, [true, false], default: false
 property :realm, String, required: true
+property :replica, [true, false], default: false
 property :server_hostname, String, name_property: true
 
 action :install do
@@ -71,7 +72,7 @@ action :install do
     sensitive true
     creates '/etc/ipa/default.conf'
     notifies :run, 'execute[ipactl restart]'
-  end
+  end unless new_resource.replica
 
   execute 'ipactl restart' do
     action :nothing

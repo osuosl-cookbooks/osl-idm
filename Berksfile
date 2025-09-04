@@ -4,5 +4,6 @@ source 'https://supermarket.chef.io'
 solver :ruby, :required
 
 cookbook 'test-idm', path: 'test/cookbooks/test-idm'
+cookbook 'multi-node', path: 'test/cookbooks/multi-node'
 
 metadata

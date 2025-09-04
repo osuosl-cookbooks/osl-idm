@@ -37,11 +37,12 @@ control 'keycloak' do
     its('processes') { should include 'caddy' }
   end if caddy
 
-  if caddy
-    keycloak_url = 'https://keycloak.testing.osuosl.org'
-  else
-    keycloak_url = 'http://keycloak.testing.osuosl.org:8080'
-  end
+  keycloak_url =
+    if caddy
+      'https://keycloak.testing.osuosl.org'
+    else
+      'http://keycloak.testing.osuosl.org:8080'
+    end
 
   access_token = json(content: inspec.command(
       "curl -k --silent -X POST #{keycloak_url}/realms/master/protocol/openid-connect/token " \

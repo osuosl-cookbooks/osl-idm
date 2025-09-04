@@ -20,3 +20,17 @@ kitchen.local.yml
 Berksfile.lock
 .zero-knife.rb
 Policyfile.lock.json
+
+# chef-provisioner
+test/chef-config/*.pem
+test/chef-config/local-mode-cache/
+clients/*
+cookbooks/*
+nodes/*
+vms/*
+.kitchen.list.yml
+
+# kitchen-terraform
+.terraform/
+terraform.*
+.terraform.lock.hcl

@@ -1,0 +1,57 @@
+---
+provisioner:
+  name: terraform
+
+driver:
+  name: terraform
+  command_timeout: 3600
+
+verifier:
+  name: terraform
+  systems:
+    - name: primary
+      backend: ssh
+      hosts_output: primary
+      sudo: true
+      user: almalinux
+      profile_locations:
+        - test/integration/inspec
+      controls:
+        - server
+        - pgpool
+      attrs:
+        - test/integration/multi-node/primary.yml
+    - name: replica1
+      backend: ssh
+      hosts_output: replica1
+      sudo: true
+      user: almalinux
+      profile_locations:
+        - test/integration/inspec
+      controls:
+        - server
+        - pgpool
+      attrs:
+        - test/integration/multi-node/replica1.yml
+    - name: replica2
+      backend: ssh
+      hosts_output: replica2
+      sudo: true
+      user: almalinux
+      profile_locations:
+        - test/integration/inspec
+      controls:
+        - server
+        - pgpool
+      attrs:
+        - test/integration/multi-node/replica2.yml
+
+platforms:
+  - name: almalinux-9
+    driver:
+      variables:
+        os_image: "AlmaLinux 9"
+        ssh_user_name: "almalinux"
+
+suites:
+  - name: multi-node

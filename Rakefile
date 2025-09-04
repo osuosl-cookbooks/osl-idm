@@ -10,6 +10,8 @@ require 'openssl'
 
 snakeoil_file_path = 'test/integration/data_bags/certificates/snakeoil.json'
 encrypted_data_bag_secret_path = 'test/integration/encrypted_data_bag_secret'
+current_dir = File.dirname(__FILE__)
+client_cfg = "#{current_dir}/test/chef-config"
 
 ##
 # Run command wrapper
@@ -18,6 +20,30 @@ def run_command(command)
     sh %(bundle exec #{command})
   else
     sh %(cinc exec #{command})
+  end
+end
+
+task :destroy_all do
+  run_command('rm -rf Gemfile.lock && rm -rf Berksfile.lock && rm -rf cookbooks/')
+end
+
+desc 'Vendor your cookbooks/'
+task berks_vendor: :clean do
+  run_command('berks vendor cookbooks')
+end
+
+desc 'Upload data to chef-zero server'
+task knife_upload: [:berks_vendor, :create_key] do
+  run_command('knife upload . --force -c test/chef-config/knife.rb')
+end
+
+desc 'Create Chef Key'
+task :create_key do
+  unless File.exist?("#{client_cfg}/validator.pem")
+    File.binwrite("#{client_cfg}/validator.pem", OpenSSL::PKey::RSA.new(2048).to_pem)
+  end
+  unless File.exist?("#{client_cfg}/fakeclient.pem")
+    File.binwrite("#{client_cfg}/fakeclient.pem", OpenSSL::PKey::RSA.new(2048).to_pem)
   end
 end
 
@@ -108,6 +134,9 @@ task snakeoil: snakeoil_file_path
 
 desc 'Create an Encrypted Databag Secret'
 task secret_file: encrypted_data_bag_secret_path
+
+desc 'Blow everything away'
+task clean: [:destroy_all]
 
 require 'cookstyle'
 require 'rubocop/rake_task'
