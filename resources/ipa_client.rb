@@ -12,6 +12,7 @@ property :mkhomedir, [true, false], default: true
 property :ntp, [true, false], default: false
 property :force_join, [true, false], default: false
 property :fixed_primary, [true, false], default: true
+property :dns_updates, [true, false], default: true
 
 action :install do
   package 'freeipa-client'
@@ -27,6 +28,7 @@ action :install do
       "--realm=#{new_resource.domain.upcase}",
       (new_resource.mkhomedir ? '--mkhomedir' : nil),
       (new_resource.ntp ? nil : '--no-ntp'),
+      (new_resource.dns_updates ? '--enable-dns-updates' : nil),
       (new_resource.force_join ? '--force-join' : nil),
       (new_resource.fixed_primary ? '--fixed-primary' : nil),
     ].compact.join(' ')

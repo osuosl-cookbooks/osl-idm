@@ -60,6 +60,17 @@ resource "openstack_networking_port_v2" "replica2_freeipa" {
   }
 }
 
+resource "openstack_networking_port_v2" "chef_zero_freeipa" {
+  name                  = "chef_zero_freeipa"
+  network_id            = openstack_networking_network_v2.ipa_network.id
+  admin_state_up        = "true"
+  port_security_enabled = "false"
+  fixed_ip {
+    subnet_id   = openstack_networking_subnet_v2.ipa_subnet.id
+    ip_address  = "10.1.0.5"
+  }
+}
+
 # Create instances
 resource "openstack_networking_port_v2" "chef_zero" {
     name            = "chef_zero"
@@ -85,17 +96,7 @@ resource "openstack_compute_instance_v2" "chef_zero" {
               server=140.211.166.130
               server=140.211.166.131
               addn-hosts=/etc/dnsmasq.hosts
-              srv-host=_ldap._tcp.testing.osuosl.org.,primary.testing.osuosl.org.,389,0,100
-              srv-host=_kerberos._tcp.testing.osuosl.org.,primary.testing.osuosl.org.,88,0,100
-              srv-host=_kerberos._udp.testing.osuosl.org.,primary.testing.osuosl.org.,88,0,100
-              srv-host=_kerberos-master._tcp.testing.osuosl.org.,primary.testing.osuosl.org.,88,0,100
-              srv-host=_kerberos-master._udp.testing.osuosl.org.,primary.testing.osuosl.org.,88,0,100
-              srv-host=_kpasswd._tcp.testing.osuosl.org.,primary.testing.osuosl.org.,464,0,100
-              srv-host=_kpasswd._udp.testing.osuosl.org.,primary.testing.osuosl.org.,464,0,100
-              dns-rr=_kerberos.testing.osuosl.org.,256,000a00326b7262357372763a6d3a7463703a7072696d6172792e74657374696e672e6f73756f736c2e6f72672e
-              dns-rr=_kerberos.testing.osuosl.org.,256,000a00326b7262357372763a6d3a7564703a7072696d6172792e74657374696e672e6f73756f736c2e6f72672e
-              dns-rr=_kpasswd.testing.osuosl.org.,256,000a00326b7262357372763a6d3a7463703a7072696d6172792e74657374696e672e6f73756f736c2e6f72672e
-              dns-rr=_kpasswd.testing.osuosl.org.,256,000a00326b7262357372763a6d3a7564703a7072696d6172792e74657374696e672e6f73756f736c2e6f72672e
+              server=/testing.osuosl.org/10.1.0.2
           - path: /etc/dnsmasq.hosts
             content: |
                 10.1.0.2 primary.testing.osuosl.org primary
@@ -111,6 +112,10 @@ resource "openstack_compute_instance_v2" "chef_zero" {
     }
     network {
         port = openstack_networking_port_v2.chef_zero.id
+    }
+
+    network {
+        port = openstack_networking_port_v2.chef_zero_freeipa.id
     }
 
     provisioner "remote-exec" {

@@ -51,7 +51,7 @@ action :install do
     creates "/etc/pki/tls/certs/#{new_resource.certificate}.p12"
   end
 
-  return
+  return if new_resource.replica
 
   execute 'ipa-server-install' do
     command [
